@@ -12,9 +12,9 @@ mod cache;
 /// Hyper 1 support.
 #[cfg(feature = "hyper1")]
 pub mod new;
-mod old;
 
-pub use self::old::*;
+#[cfg(feature = "hyper1")]
+pub use self::new::*;
 
 fn key_index() -> Result<Index<Ssl, SessionKey>, ErrorStack> {
     static IDX: OnceCell<Index<Ssl, SessionKey>> = OnceCell::new();
