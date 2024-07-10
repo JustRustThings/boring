@@ -17,7 +17,7 @@ rustdoc-args = ["--cfg", "docsrs"]
 [features]
 default = ["runtime"]
 
-runtime = ["hyper_old/runtime"]
+runtime = []
 
 # Use a FIPS-validated version of boringssl.
 fips = ["tokio-boring/fips"]
@@ -34,10 +34,8 @@ hyper1 = ["dep:http", "dep:hyper", "dep:hyper-util", "dep:tower-service"]
 [dependencies]
 antidote = { workspace = true }
 http = { workspace = true, optional = true }
-http_old = { workspace = true }
 hyper = { workspace = true, optional = true }
 hyper-util = { workspace = true, optional = true, features = ["client", "client-legacy"] }
-hyper_old = { workspace = true, features = ["client"] }
 linked_hash_set = { workspace = true }
 once_cell = { workspace = true }
 boring = { workspace = true }
