@@ -12,6 +12,21 @@ use crate::config::Config;
 
 mod config;
 
+macro_rules! stdout_dbg {
+    ($x:expr) => {{
+        let __x_val = $x;
+        ::std::println!(
+            "[{}:{}:{}] `{}` = {:#?}",
+            ::std::file!(),
+            ::std::line!(),
+            ::std::column!(),
+            ::std::stringify!($x),
+            __x_val,
+        );
+        __x_val
+    }};
+}
+
 fn should_use_cmake_cross_compilation(config: &Config) -> bool {
     if config.host == config.target {
         return false;
@@ -580,6 +595,7 @@ fn get_cpp_runtime_lib(config: &Config) -> Option<String> {
         return cpp_lib.clone().into_string().ok();
     }
 
+    stdout_dbg!(&config);
     match &*config.target_os {
         "macos" | "ios" | "freebsd" | "openbsd" | "android" => Some("c++".into()),
         _ if config.unix || config.target_env == "gnu" || config.target_env == "musl" => {
@@ -661,6 +677,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
 fn emit_link_directives(config: &Config) {
     let bssl_dir = build_boringssl_or_get_prebuilt(config);
     let msvc_lib_subdir = msvc_lib_subdir(config);
+    stdout_dbg!(&bssl_dir);
 
     let subdirs =
         if config.is_bazel || (config.features.is_fips_like() && config.env.path.is_some()) {
@@ -678,7 +695,7 @@ fn emit_link_directives(config: &Config) {
         println!("cargo:rustc-link-search=native={}", dir.display());
     }
 
-    if let Some(cpp_lib) = get_cpp_runtime_lib(config) {
+    if let Some(cpp_lib) = stdout_dbg!(get_cpp_runtime_lib(config)) {
         println!("cargo:rustc-link-lib={cpp_lib}");
     }
     println!("cargo:rustc-link-lib=static=crypto");

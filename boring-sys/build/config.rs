@@ -2,6 +2,7 @@ use std::env;
 use std::ffi::OsString;
 use std::path::PathBuf;
 
+#[derive(Debug)]
 pub(crate) struct Config {
     pub(crate) manifest_dir: PathBuf,
     pub(crate) out_dir: PathBuf,
@@ -17,12 +18,14 @@ pub(crate) struct Config {
     pub(crate) env: Env,
 }
 
+#[derive(Debug)]
 pub(crate) struct Features {
     pub(crate) fips: bool,
     pub(crate) rpk: bool,
     pub(crate) underscore_wildcards: bool,
 }
 
+#[derive(Debug)]
 pub(crate) struct Env {
     pub(crate) path: Option<PathBuf>,
     pub(crate) include_path: Option<PathBuf>,
